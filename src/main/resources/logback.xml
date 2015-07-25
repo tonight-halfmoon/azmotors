@@ -1,0 +1,21 @@
+<configuration debug="false" scan="true">
+	<appender name="FILE" 
+		  class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${user.home}/.AZMotors/azmotors_runtimeLog.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<Pattern>%date %level [%thread{20}] %logger %msg%n</Pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+		  <fileNamePattern>${user.home}/.AZMotors/azmotors_runtimeLog-%d{yyyy_MM_dd}.log</fileNamePattern>
+		  <maxHistory>14</maxHistory>
+		  <cleanHistoryOnStart>true</cleanHistoryOnStart>
+		</rollingPolicy>
+	</appender>
+
+	<!-- debugging info needed for Application context functionality-->
+	<logger name="com.azmotors.store.view.Store" level="DEBUG" />
+
+	<root level="INFO">
+		<appender-ref ref="FILE" />
+	</root>
+</configuration>

@@ -1,0 +1,29 @@
+apply plugin: 'java'
+
+//ant.importBuild 'build.xml'
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+}
+
+artifacts {
+  apply plugin: 'application'
+  //apply plugin: 'distribution'
+  mainClassName = 'com.azmotors.store.App'
+  version= '1.0.0-SNAPSHOT'
+}
+
+dependencies {
+  compile fileTree (dir:'lib/', include: '*.jar')
+}
+
+jar {
+  manifest.attributes 'Main-Class' : 'com.azmotors.store.App'
+  manifest.attributes 'Class-Path' : configurations.compile.collect{it.getName()}.join(' ')
+}
+
+task greeting << {
+  println 'Hi Ahmad! this is written on the ``9th of Safar 1436`` <=> The ``1st of December 2014``'
+  println 'Cloned and tested and added this line on the 5th of December 2014 - gradle run works well!'
+}

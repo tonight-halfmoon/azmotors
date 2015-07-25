@@ -1,0 +1,12 @@
+
+On Linux:
+
+[*] Method 1:
+    Using Gradle:
+    	  > gradle run.
+
+[*] Method 2:
+    Using Ant:
+    >ant antBuild.
+    ; then
+    > /launchApp.sh

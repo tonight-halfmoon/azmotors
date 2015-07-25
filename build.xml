@@ -1,0 +1,77 @@
+<project name="azmotors" default="antBuild" basedir=".">
+  <property name="src" value="src/main/java"/>
+<!--   <prpoerty name="test" value="src/test/java"/> -->
+  <property name="target" value="bin"/>
+  <property name="build" value="application"/>
+  <property name="resources" value="src/main/resources"/>
+  <property name="classes" value="${target}/classes"/>
+  <property name="lib" value="lib"/>
+  <property name="jarname" value="azmotors-1.0.0-SNAPSHOT.jar"/>
+  <property environment="env"/>
+
+ <path id="classpath">
+   <fileset dir="${lib}" includes="**/*.jar"/>
+   <fileset dir="${resources}" includes="**/*.fxml"/>
+   <fileset dir="${resources}" includes="**/logback.xml"/>
+   <filelist>
+     <file name="${env.JAVA_HOME}/jre/lib/jfxrt.jar"/>
+     <!-- Java 8 stores jfxrt in the following location -->
+     <file name="${env.JAVA_HOME}/jre/lib/ext/jfxrt.jar"/>
+     <file name="${env.JAVA_HOME}/lib/tools.jar"/>
+   </filelist>
+ </path>
+
+ <target name="compile">
+   <mkdir dir="${classes}"/>
+   <javac srcdir="${src}" destdir="${classes}" classpathref="classpath" includeantruntime="false"/>
+<!--    <javac srcdir="${test}" destdir="${classes}" classpathref="classpath" includeantruntime="false"/> -->
+ </target>
+
+ <property name="dependencies" value=". lib/tools.jar lib/jfxrt.jar lib/logback-core-1.1.2.jar lib/slf4j-api-1.7.7.jar lib/logback-classic-1.1.2.jar lib/commons-io-2.4.jar lib/junit-4.8.2.jar lib/hamcrest-core-1.3.jar"/>
+
+ <target name="antBuild" depends="compile">
+   <jar destfile="${build}/${jarname}">
+     <fileset dir="${classes}">
+       <include name="**/*.class"/>
+     </fileset>
+     <fileset dir="${resources}">
+       <include name="com/**/*"/>
+       <include name="*.fxml"/>
+       <include name="logback.xml"/>
+     </fileset>
+     <manifest>
+       <attribute name="Main-Class" value="com.azmotors.store.App"/>
+       <attribute name="Class-Path" value="${dependencies}"/>
+     </manifest>
+   </jar>
+ </target>
+
+ <target name="run" depends="antBuild">
+   <java classname="com.azmotors.store.App" classpathref="classpath">
+     <classpath>
+       <pathelement location="${build}/${jarname}"/>
+     </classpath>
+   </java>
+ </target>
+
+ <!--<target name="test" depends="compile">
+   <junit printsummary="yes">
+     <classpath>
+       <path refid="classpath"/>
+       <pathelement path="${classes}"/>
+     </classpath>
+
+     <formatter type="plain"/>
+
+     <batchtest fork="yes">
+       <fileset dir="${test}" includes="**/Test*.java"/>
+     </batchtest>
+   </junit>
+ </target>-->
+
+ <target name="antClean">
+   <delete quiet="true" dir="${build}" /> <!-- includeemptydirs="true" includes="**/*"-->
+   <delete quiet="true" dir="${classes}"/>
+   <delete quiet="true" dir="${target}"/>
+ </target>
+</project>
